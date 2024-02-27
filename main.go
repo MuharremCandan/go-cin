@@ -1,19 +1,24 @@
 package main
 
 import (
+	"go-cin/router"
+	"log"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	r := gin.Default()
+	gin.ForceConsoleColor()
+	r := router.SetUpRouter()
 
-	r.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"message": "Gin works properly!",
-		})
-	})
-
-	r.Run(":8089")
+	s := &http.Server{
+		Addr:           ":8089",
+		Handler:        r,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	log.Fatal("Create Server Error: ", s.ListenAndServe())
 }
