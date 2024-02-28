@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"go-cin/model"
 	"go-cin/util"
 
 	_ "github.com/lib/pq"
@@ -38,5 +39,7 @@ func (d *PgDb) ConnectDb() (*gorm.DB, error) {
 }
 
 func AutoMigrate(db *gorm.DB) error {
-	return db.AutoMigrate()
+	return db.AutoMigrate(
+		&model.Album{},
+	)
 }

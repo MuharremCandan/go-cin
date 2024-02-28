@@ -6,8 +6,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetUpRouter() *gin.Engine {
+func SetUpRouter(handler *handlers.AlbumHandler) *gin.Engine {
 	r := gin.Default()
-	r.GET("/ping", handlers.Ping)
+	r.POST("/", handler.CreateAlbum)
+	r.GET("/:id", handler.GetAlbum)
+	r.PUT("/:id", handler.UpdateAlbum)
+	r.DELETE("/:id", handler.DeleteAlbum)
+	r.GET("/", handler.ListAlbums)
 	return r
 }

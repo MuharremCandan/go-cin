@@ -2,7 +2,10 @@ package main
 
 import (
 	database "go-cin/db"
+	"go-cin/handlers"
+	"go-cin/repository"
 	"go-cin/router"
+	"go-cin/service"
 	"go-cin/util"
 	"log"
 	"net/http"
@@ -18,12 +21,19 @@ func main() {
 	}
 	pgDb, err := database.NewPgDb(config)
 	if err != nil {
+		log.Fatalf("Failed to create databse connection: %v", err)
+	}
+	db, err := pgDb.ConnectDb()
+	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
-	pgDb.ConnectDb()
 
 	gin.ForceConsoleColor()
-	r := router.SetUpRouter()
+
+	albumRepo := repository.NewAlbumRepository(db)
+	albumService := service.NewAlbumService(albumRepo)
+	albumHandler := handlers.NewAlbumHandler(albumService)
+	r := router.SetUpRouter(albumHandler)
 
 	s := &http.Server{
 		Addr:           ":" + config.Port,
