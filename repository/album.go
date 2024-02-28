@@ -29,12 +29,12 @@ func (repo *AlbumRepository) CreateAlbum(album *model.Album) error {
 	return repo.db.Create(album).Error
 }
 
-func (repo *AlbumRepository) UpdateAlbum(album *model.Album) error {
-	return repo.db.Save(album).Error
+func (repo *AlbumRepository) UpdateAlbum(id uuid.UUID, album *model.Album) error {
+	return repo.db.Where("id=?", id).Save(album).Error
 }
 
 func (repo *AlbumRepository) DeleteAlbum(id uuid.UUID) error {
-	return repo.db.Where("id=?").Delete(id).Error
+	return repo.db.Where("id=?", id).Delete(&model.Album{}).Error
 }
 
 func (repo *AlbumRepository) GetAlbum(id uuid.UUID) (*model.Album, error) {
