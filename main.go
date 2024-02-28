@@ -1,7 +1,9 @@
 package main
 
 import (
+	database "go-cin/db"
 	"go-cin/router"
+	"go-cin/util"
 	"log"
 	"net/http"
 	"time"
@@ -10,11 +12,21 @@ import (
 )
 
 func main() {
+	config, err := util.LoadConfig("./")
+	if err != nil {
+		log.Fatalf("Failed to load config: %v", err)
+	}
+	pgDb, err := database.NewPgDb(config)
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+	pgDb.ConnectDb()
+
 	gin.ForceConsoleColor()
 	r := router.SetUpRouter()
 
 	s := &http.Server{
-		Addr:           ":8089",
+		Addr:           ":" + config.Port,
 		Handler:        r,
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,

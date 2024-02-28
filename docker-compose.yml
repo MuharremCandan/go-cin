@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: album_postgres_container
+    environment:
+      POSTGRES_HOST: 0.0.0.0
+      POSTGRES_DB: albumapp
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: album
+    networks:
+      - mynet
+    ports:
+      - "5455:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    
+
+volumes:
+  postgres_data:
+
+networks:
+  mynet:
+    driver: bridge
