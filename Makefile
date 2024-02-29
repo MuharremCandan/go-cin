@@ -1,7 +1,10 @@
-composoup:
+composeup:
 	docker compose up -d
 	
 composodown:
 	docker compose down 
 
-.PHONY: composeup composdown
+startdocker:
+	open --background -a Docker
+
+.PHONY: composeup composdown startdocker
