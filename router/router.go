@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetUpRouter(handler *handlers.AlbumHandler) *gin.Engine {
+func SetUpRouter(handler handlers.IAlbumHandler) *gin.Engine {
 	r := gin.Default()
 	r.POST("/", handler.CreateAlbum)
 	r.GET("/:id", handler.GetAlbum)

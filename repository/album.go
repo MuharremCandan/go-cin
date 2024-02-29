@@ -9,7 +9,7 @@ import (
 
 type IAlbum interface {
 	CreateAlbum(album *model.Album) error
-	UpdateAlbum(album *model.Album) error
+	UpdateAlbum(id uuid.UUID, album *model.Album) error
 	DeleteAlbum(id uuid.UUID) error
 	GetAlbum(id uuid.UUID) (*model.Album, error)
 	GetAlbumByName(name string) (*model.Album, error)
@@ -17,45 +17,47 @@ type IAlbum interface {
 	ListAlbums() ([]*model.Album, error)
 }
 
-type AlbumRepository struct {
+type albumRepository struct {
 	db *gorm.DB
 }
 
-func NewAlbumRepository(db *gorm.DB) *AlbumRepository {
-	return &AlbumRepository{db: db}
+func NewAlbumRepository(db *gorm.DB) IAlbum {
+	return &albumRepository{
+		db: db,
+	}
 }
 
-func (repo *AlbumRepository) CreateAlbum(album *model.Album) error {
+func (repo *albumRepository) CreateAlbum(album *model.Album) error {
 	return repo.db.Create(album).Error
 }
 
-func (repo *AlbumRepository) UpdateAlbum(id uuid.UUID, album *model.Album) error {
+func (repo *albumRepository) UpdateAlbum(id uuid.UUID, album *model.Album) error {
 	return repo.db.Where("id=?", id).Save(album).Error
 }
 
-func (repo *AlbumRepository) DeleteAlbum(id uuid.UUID) error {
+func (repo *albumRepository) DeleteAlbum(id uuid.UUID) error {
 	return repo.db.Where("id=?", id).Delete(&model.Album{}).Error
 }
 
-func (repo *AlbumRepository) GetAlbum(id uuid.UUID) (*model.Album, error) {
+func (repo *albumRepository) GetAlbum(id uuid.UUID) (*model.Album, error) {
 	var album model.Album
 	err := repo.db.Where("id =?", id).First(&album).Error
 	return &album, err
 }
 
-func (repo *AlbumRepository) GetAlbumByName(name string) (*model.Album, error) {
+func (repo *albumRepository) GetAlbumByName(name string) (*model.Album, error) {
 	var album model.Album
 	err := repo.db.Where("album_name =?", name).First(&album).Error
 	return &album, err
 }
 
-func (repo *AlbumRepository) GetAlbumByArtist(artist string) (*model.Album, error) {
+func (repo *albumRepository) GetAlbumByArtist(artist string) (*model.Album, error) {
 	var album model.Album
 	err := repo.db.Where("artist =?", artist).First(&album).Error
 	return &album, err
 }
 
-func (repo *AlbumRepository) ListAlbums() ([]*model.Album, error) {
+func (repo *albumRepository) ListAlbums() ([]*model.Album, error) {
 	var albums []*model.Album
 	err := repo.db.Find(&albums).Error
 	return albums, err

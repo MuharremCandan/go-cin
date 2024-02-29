@@ -17,15 +17,15 @@ type IAlbumHandler interface {
 	ListAlbums(ctx *gin.Context)
 }
 
-type AlbumHandler struct {
-	service *service.AlbumService
+type albumHandler struct {
+	service service.IAlbumService
 }
 
-func NewAlbumHandler(service *service.AlbumService) *AlbumHandler {
-	return &AlbumHandler{service: service}
+func NewAlbumHandler(service service.IAlbumService) IAlbumHandler {
+	return &albumHandler{service: service}
 }
 
-func (ah *AlbumHandler) CreateAlbum(ctx *gin.Context) {
+func (ah *albumHandler) CreateAlbum(ctx *gin.Context) {
 	var album model.Album
 
 	if err := ctx.ShouldBindJSON(&album); err != nil {
@@ -40,7 +40,7 @@ func (ah *AlbumHandler) CreateAlbum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "album created successfully"})
 }
 
-func (ah *AlbumHandler) DeleteAlbum(ctx *gin.Context) {
+func (ah *albumHandler) DeleteAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 
 	albumID, err := uuid.Parse(albumIDStr)
@@ -57,7 +57,7 @@ func (ah *AlbumHandler) DeleteAlbum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "album deleted successfully"})
 }
 
-func (ah *AlbumHandler) UpdateAlbum(ctx *gin.Context) {
+func (ah *albumHandler) UpdateAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 	albumID, err := uuid.Parse(albumIDStr)
 	if err != nil {
@@ -77,7 +77,7 @@ func (ah *AlbumHandler) UpdateAlbum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "album updated successfully"})
 }
 
-func (ah *AlbumHandler) GetAlbum(ctx *gin.Context) {
+func (ah *albumHandler) GetAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 	albumID, err := uuid.Parse(albumIDStr)
 	if err != nil {
@@ -94,7 +94,7 @@ func (ah *AlbumHandler) GetAlbum(ctx *gin.Context) {
 	})
 }
 
-func (ah *AlbumHandler) ListAlbums(ctx *gin.Context) {
+func (ah *albumHandler) ListAlbums(ctx *gin.Context) {
 	albums, err := ah.service.ListAlbums()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

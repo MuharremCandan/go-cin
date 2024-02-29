@@ -10,29 +10,31 @@ import (
 
 type IAlbumService interface {
 	CreateAlbum(album *model.Album) error
-	UpdateAlbum(album *model.Album) error
+	UpdateAlbum(id uuid.UUID, album *model.Album) error
 	DeleteAlbum(id uuid.UUID) error
 	ListAlbums() ([]*model.Album, error)
 	GetAlbum(id uuid.UUID) (*model.Album, error)
 }
 
-type AlbumService struct {
-	repo *repository.AlbumRepository
+type albumService struct {
+	repo repository.IAlbum
 }
 
-func NewAlbumService(repo *repository.AlbumRepository) *AlbumService {
-	return &AlbumService{repo: repo}
+func NewAlbumService(repo repository.IAlbum) IAlbumService {
+	return &albumService{
+		repo: repo,
+	}
 }
 
-func (s *AlbumService) CreateAlbum(album *model.Album) error {
+func (s *albumService) CreateAlbum(album *model.Album) error {
 	return s.repo.CreateAlbum(album)
 }
 
-func (s *AlbumService) UpdateAlbum(id uuid.UUID, album *model.Album) error {
+func (s *albumService) UpdateAlbum(id uuid.UUID, album *model.Album) error {
 	return s.repo.UpdateAlbum(id, album)
 }
 
-func (s *AlbumService) DeleteAlbum(id uuid.UUID) error {
+func (s *albumService) DeleteAlbum(id uuid.UUID) error {
 	_, err := s.repo.GetAlbum(id)
 	if err != nil {
 		return fmt.Errorf("record not found: %v", err)
@@ -40,10 +42,10 @@ func (s *AlbumService) DeleteAlbum(id uuid.UUID) error {
 	return s.repo.DeleteAlbum(id)
 }
 
-func (s *AlbumService) ListAlbums() ([]*model.Album, error) {
+func (s *albumService) ListAlbums() ([]*model.Album, error) {
 	return s.repo.ListAlbums()
 }
 
-func (s *AlbumService) GetAlbum(id uuid.UUID) (*model.Album, error) {
+func (s *albumService) GetAlbum(id uuid.UUID) (*model.Album, error) {
 	return s.repo.GetAlbum(id)
 }
