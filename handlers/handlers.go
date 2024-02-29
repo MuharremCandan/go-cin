@@ -3,6 +3,7 @@ package handlers
 import (
 	"go-cin/model"
 	"go-cin/service"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -28,15 +29,15 @@ func (ah *AlbumHandler) CreateAlbum(ctx *gin.Context) {
 	var album model.Album
 
 	if err := ctx.ShouldBindJSON(&album); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	if err := ah.service.CreateAlbum(&album); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(200, gin.H{"success": "album created successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"success": "album created successfully"})
 }
 
 func (ah *AlbumHandler) DeleteAlbum(ctx *gin.Context) {
@@ -44,51 +45,51 @@ func (ah *AlbumHandler) DeleteAlbum(ctx *gin.Context) {
 
 	albumID, err := uuid.Parse(albumIDStr)
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	if err := ah.service.DeleteAlbum(albumID); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(200, gin.H{"success": "album deleted successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"success": "album deleted successfully"})
 }
 
 func (ah *AlbumHandler) UpdateAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 	albumID, err := uuid.Parse(albumIDStr)
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	var album model.Album
 	if err := ctx.ShouldBindJSON(&album); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	if err := ah.service.UpdateAlbum(albumID, &album); err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	ctx.JSON(200, gin.H{"success": "album updated successfully"})
+	ctx.JSON(http.StatusOK, gin.H{"success": "album updated successfully"})
 }
 
 func (ah *AlbumHandler) GetAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 	albumID, err := uuid.Parse(albumIDStr)
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	album, err := ah.service.GetAlbum(albumID)
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(200, gin.H{
+	ctx.JSON(http.StatusOK, gin.H{
 		"success": album,
 	})
 }
@@ -96,10 +97,10 @@ func (ah *AlbumHandler) GetAlbum(ctx *gin.Context) {
 func (ah *AlbumHandler) ListAlbums(ctx *gin.Context) {
 	albums, err := ah.service.ListAlbums()
 	if err != nil {
-		ctx.JSON(400, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(200, gin.H{
+	ctx.JSON(http.StatusOK, gin.H{
 		"success": albums,
 	})
 }
