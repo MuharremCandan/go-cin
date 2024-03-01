@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"album_name\": \"Thriller\",\n  \"artist\": \"Michael Jackson\",\n  \"release_year\": 1982,\n  \"genre\": \"Pop\",\n  \"cover_art\": \"https://example.com/thriller-cover.jpg\"\n}\n",
+					"raw": "{\n  \"album_name\": \"Thriller\",\n  \"artist\": \"Michael Jackson\",\n  \"release_year\": 1982,\n  \"genre\": \"Pop\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -77,14 +77,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8089/75659e72-17c2-452b-b010-d4c39851cc30",
+					"raw": "http://localhost:8089/38c9abc7-fab4-40fc-90d9-91bdeb8cf31c",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8089",
 					"path": [
-						"75659e72-17c2-452b-b010-d4c39851cc30"
+						"38c9abc7-fab4-40fc-90d9-91bdeb8cf31c"
 					]
 				}
 			},
@@ -141,6 +141,36 @@
 					"port": "8089",
 					"path": [
 						"75659e72-17c2-452b-b010-d4c39851cc30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update Copy",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/muharremcandan/Desktop/IMG_4716.JPG"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8089/update-pic/38c9abc7-fab4-40fc-90d9-91bdeb8cf31c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"update-pic",
+						"38c9abc7-fab4-40fc-90d9-91bdeb8cf31c"
 					]
 				}
 			},
