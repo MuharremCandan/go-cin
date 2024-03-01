@@ -1,4 +1,4 @@
-package util
+package utils
 
 import (
 	"github.com/spf13/viper"
@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Port     string         `mapstructure:"PORT"`
 	Database DatabaseConfig `mapstructure:"DATABASE"`
+	Cloud    Cloud          `mapstructure:"CLOUD"`
 }
 
 type DatabaseConfig struct {
@@ -17,6 +18,10 @@ type DatabaseConfig struct {
 	DbUser string `mapstructure:"DB_USER"`
 	DbPass string `mapstructure:"DB_PASS"`
 	DbName string `mapstructure:"DB_NAME"`
+}
+
+type Cloud struct {
+	CloudinaryURL string `mapstructure:"CLOUDINARY_URL"`
 }
 
 // LoadConfig reads configuration from file or environment variables.

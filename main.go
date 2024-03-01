@@ -1,12 +1,13 @@
 package main
 
 import (
+	"go-cin/cloud"
 	database "go-cin/db"
 	"go-cin/handlers"
 	"go-cin/repository"
 	"go-cin/router"
 	"go-cin/service"
-	"go-cin/util"
+	"go-cin/utils"
 	"log"
 	"net/http"
 	"time"
@@ -15,7 +16,7 @@ import (
 )
 
 func main() {
-	config, err := util.LoadConfig("./")
+	config, err := utils.LoadConfig("./")
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}
@@ -28,11 +29,15 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
+	cld, err := cloud.NewCloud(config.Cloud.CloudinaryURL)
+	if err != nil {
+		log.Fatalf("Failed to create cloudinary connection: %v", err)
+	}
 	gin.ForceConsoleColor()
 
 	albumRepo := repository.NewAlbumRepository(db)
 	albumService := service.NewAlbumService(albumRepo)
-	albumHandler := handlers.NewAlbumHandler(albumService)
+	albumHandler := handlers.NewAlbumHandler(albumService, cld)
 	r := router.SetUpRouter(albumHandler)
 
 	s := &http.Server{

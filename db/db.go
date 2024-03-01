@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 	"go-cin/model"
-	"go-cin/util"
+	"go-cin/utils"
 
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
@@ -11,10 +11,10 @@ import (
 )
 
 type PgDb struct {
-	config util.Config
+	config utils.Config
 }
 
-func NewPgDb(config util.Config) (*PgDb, error) {
+func NewPgDb(config utils.Config) (*PgDb, error) {
 	return &PgDb{config: config}, nil
 }
 
