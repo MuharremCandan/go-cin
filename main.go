@@ -35,10 +35,13 @@ func main() {
 	}
 	gin.ForceConsoleColor()
 
+	r := gin.Default()
+
 	albumRepo := repository.NewAlbumRepository(db)
 	albumService := service.NewAlbumService(albumRepo)
 	albumHandler := handlers.NewAlbumHandler(albumService, cld)
-	r := router.SetUpRouter(albumHandler)
+
+	router.NewRouter(albumHandler).SetUpRouter(r)
 
 	s := &http.Server{
 		Addr:           ":" + config.Port,
