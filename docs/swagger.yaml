@@ -1,0 +1,151 @@
+definitions:
+  model.Album:
+    properties:
+      album_name:
+        type: string
+      artist:
+        type: string
+      cover_art:
+        type: string
+      created_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+      deleted_at:
+        format: date-time
+        type: string
+      genre:
+        type: string
+      id:
+        example: f0a0a1e9-69bd-4bef-b8c6-4e8c0d3a1212
+        type: string
+      release_year:
+        type: integer
+      updated_at:
+        example: "2021-01-01T00:00:00Z"
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /album:
+    get:
+      description: Get a list of all albums
+      operationId: get-all-albums
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/model.Album'
+            type: array
+      summary: Get all albums
+      tags:
+      - albums
+    post:
+      consumes:
+      - application/json
+      description: Create a new album with the provided details
+      operationId: create-album
+      parameters:
+      - description: Album details
+        in: body
+        name: album
+        required: true
+        schema:
+          $ref: '#/definitions/model.Album'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Album'
+      summary: Create a new album
+      tags:
+      - albums
+  /album/:id:
+    delete:
+      description: Delete an album by its ID
+      operationId: delete-album-by-id
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      summary: Delete an album by ID
+      tags:
+      - albums
+    get:
+      description: Get an album details by its ID
+      operationId: get-album-by-id
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Album'
+      summary: Get an album by ID
+      tags:
+      - albums
+  /albums/:id:
+    put:
+      description: Update an existing album with the provided details
+      operationId: update-album-by-id
+      parameters:
+      - description: Album ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated album details
+        in: body
+        name: album
+        required: true
+        schema:
+          $ref: '#/definitions/model.Album'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Album'
+      summary: Update an album by ID
+      tags:
+      - albums
+  /upload/image/:id:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload an image to the server
+      operationId: upload-image
+      parameters:
+      - description: Image file to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Upload an image
+      tags:
+      - images
+swagger: "2.0"

@@ -4,10 +4,10 @@ import (
 	"go-cin/cloud"
 	database "go-cin/db"
 	"go-cin/handlers"
+	"go-cin/pkg/config"
 	"go-cin/repository"
 	"go-cin/router"
 	"go-cin/service"
-	"go-cin/utils"
 	"log"
 	"net/http"
 	"time"
@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-	config, err := utils.LoadConfig("./")
+	config, err := config.LoadConfig("./")
 	if err != nil {
 		log.Fatalf("Failed to load config: %v", err)
 	}

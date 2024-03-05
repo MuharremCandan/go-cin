@@ -33,6 +33,15 @@ func NewAlbumHandler(service service.IAlbumService, cld *cloudinary.Cloudinary) 
 	}
 }
 
+// @Summary Upload an image
+// @Description Upload an image to the server
+// @Tags images
+// @ID upload-image
+// @Accept mpfd
+// @Produce json
+// @Param file formData file true "Image file to upload"
+// @Success 200
+// @Router /upload/image/:id [post]
 func (ah *AlbumHandler) UploadImage(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 
@@ -72,6 +81,15 @@ func (ah *AlbumHandler) UploadImage(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "Picture added succesfully!"})
 }
 
+// @Summary Create a new album
+// @Description Create a new album with the provided details
+// @Tags albums
+// @ID create-album
+// @Accept json
+// @Produce json
+// @Param album body model.Album true "Album details"
+// @Success 201 {object} model.Album
+// @Router /album [post]
 func (ah *AlbumHandler) CreateAlbum(ctx *gin.Context) {
 	var album model.Album
 
@@ -87,6 +105,14 @@ func (ah *AlbumHandler) CreateAlbum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "album created successfully"})
 }
 
+// @Summary Delete an album by ID
+// @Description Delete an album by its ID
+// @Tags albums
+// @ID delete-album-by-id
+// @Produce json
+// @Param id path int true "Album ID"
+// @Success 204 "No Content"
+// @Router /album/:id [delete]
 func (ah *AlbumHandler) DeleteAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 
@@ -104,6 +130,15 @@ func (ah *AlbumHandler) DeleteAlbum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "album deleted successfully"})
 }
 
+// @Summary Update an album by ID
+// @Description Update an existing album with the provided details
+// @Tags albums
+// @ID update-album-by-id
+// @Produce json
+// @Param id path int true "Album ID"
+// @Param album body model.Album true "Updated album details"
+// @Success 200 {object} model.Album
+// @Router /albums/:id [put]
 func (ah *AlbumHandler) UpdateAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 	albumID, err := uuid.Parse(albumIDStr)
@@ -124,6 +159,14 @@ func (ah *AlbumHandler) UpdateAlbum(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"success": "album updated successfully"})
 }
 
+// @Summary Get an album by ID
+// @Description Get an album details by its ID
+// @Tags albums
+// @ID get-album-by-id
+// @Produce json
+// @Param id path int true "Album ID"
+// @Success 200 {object} model.Album
+// @Router /album/:id [get]
 func (ah *AlbumHandler) GetAlbum(ctx *gin.Context) {
 	albumIDStr := ctx.Params.ByName("id")
 	albumID, err := uuid.Parse(albumIDStr)
@@ -141,6 +184,13 @@ func (ah *AlbumHandler) GetAlbum(ctx *gin.Context) {
 	})
 }
 
+// @Summary Get all albums
+// @Description Get a list of all albums
+// @Tags albums
+// @ID get-all-albums
+// @Produce json
+// @Success 200 {array} model.Album
+// @Router /album [get]
 func (ah *AlbumHandler) ListAlbums(ctx *gin.Context) {
 	albums, err := ah.service.ListAlbums()
 	if err != nil {
