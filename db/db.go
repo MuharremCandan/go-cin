@@ -43,3 +43,15 @@ func AutoMigrate(db *gorm.DB) error {
 		&model.Album{},
 	)
 }
+
+func (d *PgDb) Ping() error {
+	db, err := d.ConnectDb()
+	if err != nil {
+		return err
+	}
+	sqlDB, err := db.DB()
+	if err != nil {
+		return err
+	}
+	return sqlDB.Ping()
+}

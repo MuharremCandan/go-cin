@@ -63,10 +63,16 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "Successfully created album",
                         "schema": {
-                            "$ref": "#/definitions/model.Album"
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -202,13 +208,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "album_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Abbey Road"
                 },
                 "artist": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "The Beatles"
                 },
                 "cover_art": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "https://example.com/abbey_road_cover.jpg"
                 },
                 "created_at": {
                     "type": "string",
@@ -219,14 +228,16 @@ const docTemplate = `{
                     "format": "date-time"
                 },
                 "genre": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Rock"
                 },
                 "id": {
                     "type": "string",
                     "example": "f0a0a1e9-69bd-4bef-b8c6-4e8c0d3a1212"
                 },
                 "release_year": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1969
                 },
                 "updated_at": {
                     "type": "string",

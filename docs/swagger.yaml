@@ -2,10 +2,13 @@ definitions:
   model.Album:
     properties:
       album_name:
+        example: Abbey Road
         type: string
       artist:
+        example: The Beatles
         type: string
       cover_art:
+        example: https://example.com/abbey_road_cover.jpg
         type: string
       created_at:
         example: "2021-01-01T00:00:00Z"
@@ -14,11 +17,13 @@ definitions:
         format: date-time
         type: string
       genre:
+        example: Rock
         type: string
       id:
         example: f0a0a1e9-69bd-4bef-b8c6-4e8c0d3a1212
         type: string
       release_year:
+        example: 1969
         type: integer
       updated_at:
         example: "2021-01-01T00:00:00Z"
@@ -58,10 +63,14 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Successfully created album
           schema:
-            $ref: '#/definitions/model.Album'
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
       summary: Create a new album
       tags:
       - albums

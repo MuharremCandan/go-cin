@@ -88,7 +88,8 @@ func (ah *AlbumHandler) UploadImage(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param album body model.Album true "Album details"
-// @Success 201 {object} model.Album
+// @Success 200 {string} string "Successfully created album"
+// @Failure 400 {object} string "Bad Request"
 // @Router /album [post]
 func (ah *AlbumHandler) CreateAlbum(ctx *gin.Context) {
 	var album model.Album
